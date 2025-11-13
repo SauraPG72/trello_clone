@@ -1,65 +1,154 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { SignInButton, SignUpButton, useUser } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  CheckSquare,
+  Users,
+  Zap,
+  Shield,
+  ArrowRight,
+  Trello,
+} from "lucide-react";
+import Navbar from "@/components/navbar";
+
+export default function HomePage() {
+  const { isSignedIn, user } = useUser();
+
+  const features = [
+    {
+      icon: CheckSquare,
+      title: "Task Management",
+      description: "Organize your tasks with intuitive drag-and-drop boards",
+    },
+    {
+      icon: Users,
+      title: "Team Collaboration",
+      description: "Work together with your team in real-time",
+    },
+    {
+      icon: Zap,
+      title: "Lightning Fast",
+      description: "Built with Next.js 15 for optimal performance",
+    },
+    {
+      icon: Shield,
+      title: "Secure",
+      description: "Enterprise-grade security with Clerk authentication",
+    },
+  ];
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <Navbar />
+
+      {/* Hero Section */}
+      <section className="container mx-auto px-4 py-20 text-center">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+            Organize work and life,{" "}
+            <span className="text-blue-600">finally.</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            TrelloClone helps teams move work forward. Collaborate, manage
+            projects, and reach new productivity peaks. From high rises to the
+            home office, the way your team works is unique—accomplish it all
+            with TrelloClone.
+          </p>
+
+          {!isSignedIn && (
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <SignUpButton>
+                <Button size="lg" className="text-lg px-8">
+                  Start for free
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </SignUpButton>
+              <Button variant="outline" size="lg" className="text-lg px-8">
+                Watch demo
+              </Button>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="container mx-auto px-4 py-20">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Everything you need to stay organized
+          </h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Powerful features to help your team collaborate and get more done.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {features.map((feature, index) => (
+            <Card
+              key={index}
+              className="border-0 shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <CardHeader className="text-center">
+                <div className="mx-auto w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                  <feature.icon className="h-6 w-6 text-blue-600" />
+                </div>
+                <CardTitle className="text-lg">{feature.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-center">
+                  {feature.description}
+                </CardDescription>
+              </CardContent>
+            </Card>
+          ))}
         </div>
-      </main>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-blue-600 py-20">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            Ready to get started?
+          </h2>
+          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+            Join thousands of teams who are already using TrelloClone to
+            organize their work.
+          </p>
+
+          {!isSignedIn && (
+            <SignUpButton>
+              <Button size="lg" variant="secondary" className="text-lg px-8">
+                Start your free trial
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </SignUpButton>
+          )}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="flex items-center space-x-2 mb-4 md:mb-0">
+              <Trello className="h-6 w-6 text-blue-400" />
+              <span className="text-xl font-bold">TrelloClone</span>
+            </div>
+            <div className="flex items-center space-x-6 text-sm text-gray-400">
+              <span>© 2024 TrelloClone. All rights reserved.</span>
+              <span>Built with Next.js & Clerk</span>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
